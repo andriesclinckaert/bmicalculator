@@ -6,9 +6,8 @@ import './App.css';
  * The key in the detect corresponds to the attribute `name=...` you'll use for the corresponding field.
  */
 const INITIAL_VALUES = {
-  a: 1,
-  b: 2,
-  c: false,
+  length: 170,
+  weight: 65.5,
 }
 
 /**
@@ -20,43 +19,41 @@ export function Calculator() {
   // 💡 the variable values provides access to all the current values of the form
   const { values } = useFormikContext<typeof INITIAL_VALUES>()
 
-  let result = (values.a + values.b)
-  if (values.c) {
-    result = result * 2
-  }
-
+  let result = ((values.weight)/((values.length/100)*(values.length/100))).toFixed(1)
+  
+  
   // here comes the HTML for your calculator
   return (
-    <Form className='sm:text-sm'>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
-      <div className="mt-2">
-        <label className='mx-1'>
-          Value of <strong>a</strong>:
-        </label>
-        {/** Notice the `name="a"` attribute! Use this key to retrieve the value of this field: `values.a` */}
-        <Field className="rounded-md border-gray-400" type="number" name="a" />
+    <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h1 className="mt-6 text-center text-3xl font-bold text-blue-700">
+            BMI calculator
+          </h1>
+          </div>
+        <Form className="rounded-md">
+          
+          <div className="mt-2">
+            <label className='block text-sm font-medium text-gray-700'>
+              Lengte (cm):
+            </label>
+
+            <Field className="t-1 block shadow-sm sm:text-sm border-gray-300 rounded-md" type="number" name="length" min={50} max={250} />
+          </div>
+          <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+            <label className='block text-sm font-medium text-gray-700'>
+              Gewicht (kg):
+            </label>
+            <Field className="t-1 block shadow-sm sm:text-sm border-gray-300 rounded-md" type="number" name="weight" min={0} max={250} precision={2} step={0.1}/>
+          </div>
+          
+          <div className="col-span-6 sm:col-span-3 lg:col-span-2 block">
+            <label className="block font-bold text-gray-700">Resultaat:</label>
+            <h1 className="text-2xl text-center items-center justify-center px-5 py-3 border border-transparent font-medium rounded-md text-blue-700 bg-indigo-50 hover:bg-indigo-300">{result} kg/m²</h1>
+          </div>
+        </Form>
       </div>
-      <div className="mt-2">
-        <label className='mx-1'>
-          Value of <strong>b</strong>:
-        </label>
-        <Field className="rounded-md border-gray-400" type="number" name="b" />
-      </div>
-      <div className="mt-2">
-        <label className='mx-1'>
-          Multiply by two:
-        </label>
-        <Field className="rounded-md border-gray-400" type="checkbox" name="c" />
-      </div>
-      <div className="mt-2">
-        <label className='mx-1'>
-          Value of <strong>c</strong>:
-        </label>
-        <Field className="rounded-md border-gray-400 disabled:bg-gray-50" type="number" name="d" value={result} disabled />
-      </div>
-    </Form>
+    </div>
   )
 }
 
